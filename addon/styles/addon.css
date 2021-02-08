@@ -1,0 +1,35 @@
+.image-upload {
+  position: relative;
+
+  height: var(--image-upload-height);
+  width: var(--image-upload-width);
+
+  background-color: lightgray;
+
+  display: flex;
+  align-items: flex-start;
+}
+
+.image-upload > .dz-preview {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.image-upload > .dz-preview > .dz-image {
+  height: var(--image-upload-height);
+  width: var(--image-upload-width);
+}
+
+.image-upload > .dz-preview > .dz-details, .dz-progress, .dz-error-message, .dz-success-mark, .dz-error-mark {
+  display: none;
+}
+
+.image-upload__initial-image {
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  width: 100%;
+  height: 100%;
+}

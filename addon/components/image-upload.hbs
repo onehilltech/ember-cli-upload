@@ -1,0 +1,10 @@
+<div class="image-upload"
+  {{custom-property "--image-upload-height" this.cssHeight}}
+  {{custom-property "--image-upload-width" this.cssWidth}}
+  {{did-insert this.didInsert}}
+  {{did-update this.reset @reset}}>
+
+  {{#if @image}}
+    <img class="image-upload__initial-image" src={{@image}} />
+  {{/if}}
+</div>
