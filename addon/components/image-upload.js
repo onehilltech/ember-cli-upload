@@ -12,7 +12,54 @@ export default class ImageUploadComponent extends Component {
   @action
   didInsert (element) {
     this._dropzone = new Dropzone (element, this.options);
-    this._dropzone.on ('addedfile', this._addedFile.bind (this));
+    this._initListeners ();
+  }
+
+  _initListeners () {
+    this._dropzone.on ('addedfile', (file) => {
+      if (this._dropzone.files.length > 1) {
+        // We only allow one file per component.
+        this._dropzone.removeFile (this._dropzone.files[0]);
+      }
+
+      this.didAddFile (file);
+      (this.args.change || noOp) (file);
+    });
+
+    this._dropzone.on ('success', (file) => {
+      this.didSuccess (file);
+      (this.args.success || noOp) (file);
+    });
+
+    this._dropzone.on ('error', (file, message) => {
+      this.didError (file, message);
+      (this.args.success || noOp) (file, message);
+    });
+
+    this._dropzone.on ('canceled', (file) => {
+      this.didCancel (file);
+      (this.args.canceled || noOp) (file);
+    });
+
+    this._dropzone.on ('complete', (file) => {
+      this.didComplete (file);
+      (this.args.complete || noOp) (file);
+    });
+
+    this._dropzone.on ('sending', (file) => {
+      this.didSending (file);
+      (this.args.sending || noOp) (file);
+    });
+
+    this._dropzone.on ('processing', (file) => {
+      this.didProcessing (file);
+      (this.args.processing || noOp) (file);
+    });
+
+    this._dropzone.on ('uploadprogress', (file, progress, bytesSent) => {
+      this.didProgress (file, progress, bytesSent);
+      (this.args.progress || noOp) (file, progress, bytesSent);
+    });
   }
 
   willDestroy () {
@@ -98,14 +145,32 @@ export default class ImageUploadComponent extends Component {
     return this.args.thumbnailWidth || '120';
   }
 
-  _addedFile (file) {
-    if (this._dropzone.files.length > 1) {
-      // We only allow one file per component.
-      this._dropzone.removeFile (this._dropzone.files[0]);
-    }
+  didSuccess (/* file */) {
 
-    this.didAddFile (file);
-    (this.args.change || noOp) (file);
+  }
+
+  didError (/* file, message */) {
+
+  }
+
+  didCancel (/* file */) {
+
+  }
+
+  didComplete (/* file */) {
+
+  }
+
+  didSending (/* file */) {
+
+  }
+
+  didProcessing (/* file */) {
+
+  }
+
+  didProgress (/* file, progress, bytesSent */) {
+
   }
 
   /**
@@ -116,4 +181,5 @@ export default class ImageUploadComponent extends Component {
   didAddFile (/*file*/) {
 
   }
+
 }
