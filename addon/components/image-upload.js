@@ -80,7 +80,8 @@ export default class ImageUploadComponent extends Component {
       headers: this.headers,
       acceptedFiles: this.acceptedFiles,
       autoProcessQueue: this.autoProcess,
-      renameFile: this.renameFile
+      renameFile: this.renameFile,
+      paramName: this.paramName
     }, { maxFiles: 1 });
   }
 
@@ -122,6 +123,10 @@ export default class ImageUploadComponent extends Component {
 
   get renameFile () {
     return getWithDefault (this.args, 'renameFile', null);
+  }
+
+  get paramName () {
+    return this.args.paramName || 'file';
   }
 
   @action
