@@ -23,7 +23,7 @@
     "test:all": "ember try:each"
   },
   "dependencies": {
-    "dropzone": "^5.7.4",
+    "dropzone": "^5.9.3",
     "ember-auto-import": "^1.10.1",
     "ember-cli-babel": "^7.17.2",
     "ember-cli-blueprint-helpers": "^0.4.7",
