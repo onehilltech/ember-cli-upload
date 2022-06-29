@@ -33,7 +33,7 @@ export default class ImageUploadComponent extends Component {
 
     this._dropzone.on ('error', (file, message) => {
       this.didError (file, message);
-      (this.args.success || noOp) (file, message);
+      (this.args.error || noOp) (file, message);
     });
 
     this._dropzone.on ('canceled', (file) => {
