@@ -37,6 +37,7 @@ export default class ImageUploadComponent extends Component {
       url: this.url,
       method: this.method,
       withCredentials: this.withCredentials,
+      clickable: this.clickable,
       timeout: this.timeout,
       thumbnailHeight: this.thumbnailHeight,
       thumbnailWidth: this.thumbnailWidth,
@@ -82,8 +83,12 @@ export default class ImageUploadComponent extends Component {
     return this.args.headers;
   }
 
+  get clickable () {
+    return getWithDefault (this.args, 'clickable', true);
+  }
+
   get acceptedFiles () {
-    return this.args.acceptedFiles;
+    return this.args.acceptedFiles || 'image/*';
   }
 
   get autoProcess () {
