@@ -85,7 +85,7 @@ export default class ImageUploadComponent extends Component {
   }
 
   get clickable () {
-    return getWithDefault (this.args, 'clickable', true);
+    return getWithDefault (this.args, 'clickable', ['.image-upload', '.image-upload__image']);
   }
 
   get acceptedFiles () {
