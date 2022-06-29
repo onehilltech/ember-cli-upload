@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { action, getWithDefault } from '@ember/object';
+import { action, getWithDefault, get } from '@ember/object';
 import { isEmpty, isPresent } from '@ember/utils';
 
 import Dropzone from 'dropzone';
@@ -16,50 +16,14 @@ export default class ImageUploadComponent extends Component {
   }
 
   _initListeners () {
-    this._dropzone.on ('addedfile', (file) => {
-      if (this._dropzone.files.length > 1) {
-        // We only allow one file per component.
-        this._dropzone.removeFile (this._dropzone.files[0]);
-      }
-
-      this.didAddFile (file);
-      (this.args.change || noOp) (file);
-    });
-
-    this._dropzone.on ('success', (file) => {
-      this.didSuccess (file);
-      (this.args.success || noOp) (file);
-    });
-
-    this._dropzone.on ('error', (file, message) => {
-      this.didError (file, message);
-      (this.args.error || noOp) (file, message);
-    });
-
-    this._dropzone.on ('canceled', (file) => {
-      this.didCancel (file);
-      (this.args.canceled || noOp) (file);
-    });
-
-    this._dropzone.on ('complete', (file) => {
-      this.didComplete (file);
-      (this.args.complete || noOp) (file);
-    });
-
-    this._dropzone.on ('sending', (file) => {
-      this.didSending (file);
-      (this.args.sending || noOp) (file);
-    });
-
-    this._dropzone.on ('processing', (file) => {
-      this.didProcessing (file);
-      (this.args.processing || noOp) (file);
-    });
-
-    this._dropzone.on ('uploadprogress', (file, progress, bytesSent) => {
-      this.didProgress (file, progress, bytesSent);
-      (this.args.progress || noOp) (file, progress, bytesSent);
-    });
+    this._dropzone.on ('addedfile', this.didAddFile.bind (this));
+    this._dropzone.on ('success', this.didSuccess.bind (this));
+    this._dropzone.on ('error', this.didError.bind (this));
+    this._dropzone.on ('canceled', this.didCancel.bind (this));
+    this._dropzone.on ('complete', this.didComplete.bind (this));
+    this._dropzone.on ('sending', this.didSending.bind (this));
+    this._dropzone.on ('processing', this.didProcessing.bind (this));
+    this._dropzone.on ('uploadprogress', this.didProgress.bind (this));
   }
 
   willDestroy () {
@@ -77,6 +41,7 @@ export default class ImageUploadComponent extends Component {
       thumbnailHeight: this.thumbnailHeight,
       thumbnailWidth: this.thumbnailWidth,
       maxFilesize: this.maxFilesize,
+      filesizeBase: this.filesizeBase,
       headers: this.headers,
       acceptedFiles: this.acceptedFiles,
       autoProcessQueue: this.autoProcess,
@@ -107,6 +72,10 @@ export default class ImageUploadComponent extends Component {
 
   get maxFilesize () {
     return this.args.maxFilesize || 256;
+  }
+
+  get filesizeBase () {
+    return this.args.filesizeBase || 1000;
   }
 
   get headers () {
@@ -150,32 +119,38 @@ export default class ImageUploadComponent extends Component {
     return this.args.thumbnailWidth || '120';
   }
 
-  didSuccess (/* file */) {
-
+  get removeOnError () {
+    return get (this.args, 'removeOnError', true);
   }
 
-  didError (/* file, message */) {
-
+  didSuccess (file) {
+    (this.args.success || noOp) (file);
   }
 
-  didCancel (/* file */) {
-
+  didError (file, message) {
+    // Remove the file that errored.
+    this._dropzone.removeFile (file);
+    (this.args.error || noOp) (file, message);
   }
 
-  didComplete (/* file */) {
-
+  didCancel (file) {
+    (this.args.canceled || noOp) (file);
   }
 
-  didSending (/* file */) {
-
+  didComplete (file) {
+    (this.args.complete || noOp) (file);
   }
 
-  didProcessing (/* file */) {
-
+  didSending (file) {
+    (this.args.sending || noOp) (file);
   }
 
-  didProgress (/* file, progress, bytesSent */) {
+  didProcessing (file) {
+    (this.args.processing || noOp) (file);
+  }
 
+  didProgress (file, progress, bytesSent) {
+    (this.args.progress || noOp) (file, progress, bytesSent);
   }
 
   /**
@@ -183,8 +158,12 @@ export default class ImageUploadComponent extends Component {
    *
    * @param file
    */
-  didAddFile (/*file*/) {
+  didAddFile (file) {
+    // We only allow one file per component.
+    if (this._dropzone.files.length > 1) {
+      this._dropzone.removeFile (this._dropzone.files[0]);
+    }
 
+    (this.args.change || noOp) (file);
   }
-
 }
