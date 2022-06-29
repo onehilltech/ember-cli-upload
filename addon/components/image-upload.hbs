@@ -4,7 +4,8 @@
   {{did-insert this.didInsert}}
   {{did-update this.reset @reset}}>
 
-  {{#if @image}}
-    <img class="image-upload__initial-image" src={{@image}} />
-  {{/if}}
+  <img class="image-upload__image" data-dz-thumbnail src={{@image}} />
+
+  {{yield}}
+
 </div>

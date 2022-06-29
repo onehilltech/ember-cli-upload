@@ -47,7 +47,8 @@ export default class ImageUploadComponent extends Component {
       acceptedFiles: this.acceptedFiles,
       autoProcessQueue: this.autoProcess,
       renameFile: this.renameFile,
-      paramName: this.paramName
+      paramName: this.paramName,
+      disablePreviews: true,
     }, { maxFiles: 1 });
   }
 
@@ -109,19 +110,19 @@ export default class ImageUploadComponent extends Component {
   }
 
   get cssHeight () {
-    return `${this.thumbnailHeight}px`;
+    return isPresent (this.thumbnailHeight) ? `${this.thumbnailHeight}px` : undefined;
   }
 
   get cssWidth () {
-    return `${this.thumbnailWidth}px`;
+    return isPresent (this.thumbnailWidth) ? `${this.thumbnailWidth}px` : undefined;
   }
 
   get thumbnailHeight () {
-    return this.args.thumbnailHeight || '120';
+    return this.args.thumbnailHeight;
   }
 
   get thumbnailWidth () {
-    return this.args.thumbnailWidth || '120';
+    return this.args.thumbnailWidth;
   }
 
   get removeOnError () {
