@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-upload",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "ember-cli addons for supporting file uploads",
   "keywords": [
     "ember-addon",
