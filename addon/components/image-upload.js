@@ -49,6 +49,11 @@ export default class ImageUploadComponent extends Component {
       renameFile: this.renameFile,
       paramName: this.paramName,
       disablePreviews: true,
+      resizeWidth: this.resizeWidth,
+      resizeHeight: this.resizeHeight,
+      resizeMimeType: this.resizeMimeType,
+      resizeQuality: this.resizeQuality,
+      resizeMethod: this.resizeMethod,
     }, { maxFiles: 1 });
   }
 
@@ -127,6 +132,26 @@ export default class ImageUploadComponent extends Component {
 
   get removeOnError () {
     return get (this.args, 'removeOnError', true);
+  }
+
+  get resizeWidth () {
+    return this.args.resizeWidth || null;
+  }
+
+  get resizeHeight () {
+    return this.args.resizeHeight || null;
+  }
+
+  get resizeMimeType () {
+    return this.args.resizeMimeType || null;
+  }
+
+  get resizeQuality () {
+    return this.args.resizeQuality || 0.8;
+  }
+
+  get resizeMethod () {
+    return this.args.resizeMethod || 'contain';
   }
 
   didSuccess (file) {
